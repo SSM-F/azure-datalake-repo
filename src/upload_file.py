@@ -34,5 +34,5 @@ def upload_file(connection_string,
         return service_client
 
     except ClientAuthenticationError:
-        logging.critical("Was not able to conenct to account, please check connection string syntax")
+        logging.critical("Was not able to connect to account, please check connection string syntax")
         return "Error uploading the file"
