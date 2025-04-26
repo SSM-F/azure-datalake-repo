@@ -1,18 +1,9 @@
-import os
-from azure.storage.filedatalake import (
-    DataLakeServiceClient,
-    DataLakeDirectoryClient,
-    FileSystemClient,
-    DataLakeFileClient
-)
-from azure.identity import DefaultAzureCredential
-from azure.core.credentials import AzureNamedKeyCredential
+
+from azure.storage.filedatalake import DataLakeServiceClient
 import json
-from dotenv import load_dotenv
 from azure.core.exceptions import ClientAuthenticationError
 import pandas as pd
-
-load_dotenv(dotenv_path='example.env') 
+import logging
 
 
 
@@ -39,8 +30,9 @@ def upload_file(connection_string,
         
         file_client.flush_data(len(data))
         
-
-        return "File uploaded succesfully"
+        logging.info("File uploaeded succesfully")
+        return service_client
 
     except ClientAuthenticationError:
+        logging.critical("Was not able to conenct to account, please check connection string syntax")
         return "Error uploading the file"
