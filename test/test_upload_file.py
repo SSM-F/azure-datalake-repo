@@ -17,16 +17,15 @@ def test_upload_file():
 
     file_system_name = 'myfirstcontainer'
     file_path = 'data/customer_industries.json'
-    account_name = os.getenv('ACCOUNTNAME')
-    account_key= os.getenv('ACCOUNTKEY')
+    #account_name = os.getenv('ACCOUNTNAME')
+    #account_key= os.getenv('ACCOUNTKEY')
     connection_string = os.getenv("CONNSTRING")
    
     
     response = upload_file(connection_string,
                            file_system_name,
                            file_path,
-                           account_name,
-                           account_key)
+                           )
     assert response == "File uploaded succesfully"
 
 
