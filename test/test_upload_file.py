@@ -1,13 +1,14 @@
 from src.upload_file import upload_file
 
 from azure.storage.filedatalake import DataLakeServiceClient
-
+from azure.core.exceptions import ClientAuthenticationError
+from unittest.mock import patch,MagicMock
 from dotenv import load_dotenv
 
 load_dotenv(dotenv_path='example.env') 
 import os
 import logging
-
+import pytest
 
 
 def test_upload_file():
@@ -34,15 +35,18 @@ def test_upload_file_logs_succesful_message(caplog):
                            )
     assert "File uploaeded succesfully" in caplog.text
 
+@patch('src.upload_file.DataLakeServiceClient.from_connection_string')
+def test_upload_file_ClientAuthenticationError(mock_con_string,caplog):
+    mock_con_string.side_effect = ClientAuthenticationError()
+    
+    with caplog.at_level(logging.CRITICAL):
+        response = upload_file('test',
+                           'test',
+                           'test',
+                           )
+    assert "Was not able to connect to account, please check connection string syntax" in caplog.text
+    assert response == "Error uploading the file"
 
-
-
-
-    #file_path_2 = 'data/vehicle_customers.json'
-    #response_2 = upload_file(connection_string,
-    #                       file_system_name,
-    #                       file_path_2,
-    #                       )
 
 
 
